@@ -2,6 +2,7 @@ package controller;
 
 import java.util.Scanner;
 
+import model.data_structures.Comparendo;
 import model.logic.Modelo;
 import view.View;
 
@@ -34,11 +35,11 @@ public class Controller {
 
 		int option = lector.nextInt();
 
-		while(option != 7)
+		while(option != 6)
 		{
 			if(option==1)
 			{
-				modelo.example();
+				modelo.loadJSON();
 				if(modelo.darTamano()!=1)
 					view.printMessage("La lista tiene " + modelo.darTamano() + " comparendos.");
 				else
@@ -55,11 +56,8 @@ public class Controller {
 			}
 			else if(option==3)
 			{
-				view.printMessage("Ingrese la posicion del elemento comparendo deseado.");
-				int position = lector.nextInt();
-
-				if( modelo.buscarPosicion(position)!= null)
-					view.printMessage("El comparendo encontrado fue: "+ modelo.buscarPosicion(position).toString());
+				if( modelo.primero().getItem()!= null)
+					view.printMessage("El comparendo encontrado fue: "+ modelo.primero().getItem().toString());
 				else
 					view.printMessage("No se encontro el comparendo.");
 
@@ -68,11 +66,9 @@ public class Controller {
 			}
 			else if(option==4)
 			{
-				System.out.println("Ingrese la posicion del comparendo a eliminar.");
-				int position = lector.nextInt();
-
-				if( modelo.buscarPosicion(position)!= null)
-					view.printMessage(modelo.eliminar(position).toString());
+				Comparendo borrado = modelo.eliminar();
+				if(borrado != null)
+					view.printMessage(borrado.toString());
 				else
 					view.printMessage("No se pudo eliminar el comparendo.");
 
@@ -85,16 +81,6 @@ public class Controller {
 				view.printModelo(modelo);
 				view.printMenu();
 			}
-			else if(option==6)
-			{
-				modelo.loadJSON();
-				if(modelo.darTamano()!=1)
-					view.printMessage("La lista tiene " + modelo.darTamano() + " comparendos.");
-				else
-					view.printMessage("La lista tiene " + modelo.darTamano() + " comparendo.");
-				view.printMessage("");
-				view.printMenu();
-			}
 			else
 			{
 				view.printMessage("Numero invalido");
@@ -103,7 +89,7 @@ public class Controller {
 			}
 			option = lector.nextInt();
 		}
-		if(option==7)
+		if(option==6)
 		{
 			System.out.println("Ha salido con exito.");
 		}

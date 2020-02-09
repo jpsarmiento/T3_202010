@@ -7,11 +7,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+
 import model.data_structures.Node;
+import model.data_structures.Queue;
 
 /**
  * Definicion del modelo del mundo
@@ -21,7 +28,7 @@ public class Modelo {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private LinkedList datos;
+	private Queue cola;
 
 	/**
 	 * Gson utilizado para deserializar el archivo
@@ -37,7 +44,7 @@ public class Modelo {
 	 */
 	public Modelo()
 	{
-		datos = new LinkedList();
+		cola = new Queue();
 		gson = new Gson();
 	}
 
@@ -48,7 +55,7 @@ public class Modelo {
 	 */
 	public int darTamano()
 	{
-		return datos.getLength();
+		return cola.size();
 	}
 
 	/**
@@ -57,7 +64,7 @@ public class Modelo {
 	 */
 	public void agregar(Comparendo x)
 	{	
-		datos.append(x);
+		cola.enqueue(x);
 	}
 
 	/**
@@ -67,16 +74,8 @@ public class Modelo {
 	 * @throws Exception 
 	 */
 
-	public Comparendo buscarPosicion(int x)
-	{
-		try
-		{
-			return (Comparendo) datos.getAt(x);
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
+	public Node primero() {
+		return cola.head();
 	}
 
 	/**
@@ -85,97 +84,58 @@ public class Modelo {
 	 * @return dato eliminado
 	 * @throws Exception 
 	 */
-	public Comparendo eliminar(int x)
-	{
-		try
-		{
-			return (Comparendo) datos.delete(x);
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * Ejemplo de usar gson con un objeto
-	 * @throws Exception 
-	 */
-	public void example()
-	{
-		try
-		{
-			BufferedReader br = new BufferedReader(new FileReader(new File("./data/abc.geojson")));
-			Comparendo ejemplo = gson.fromJson(br, Comparendo.class);
-			agregar(ejemplo);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error de archivo");
-		}
-	}
-
-	/**
-	 * Lectura del geojson
-	 */
-	public ArrayList<String> readJSON()
-	{
-		ArrayList<String> objects = new ArrayList<String>();
-		try
-		{
-			BufferedReader br = new BufferedReader(new FileReader(new File(SOURCE)));
-			String line = br.readLine();
-			while(line != null)
-			{
-				String object = "";
-				for(int i = 0; i < 15; i++)
-				{
-					object += line;
-					line = br.readLine();
-				}
-				objects.add(object);
-
-			}
-		}
-		catch(Exception e)
-		{
-
-		}
-		return objects;
+	public Comparendo eliminar() {
+			return (Comparendo) cola.dequeue();	
 	}
 
 	/**
 	 * Carga del geojson a objetos de la lista.
 	 */
-	public void loadJSON()
-	{
-		ArrayList<String> objects = readJSON();
-		for(int i = 0; i < objects.size(); i++)
-		{
-			Comparendo obj = gson.fromJson(objects.get(i), Comparendo.class);
-			agregar(obj);
-		}
+	public void loadJSON() {
+		ArrayList<Comparendo> objects = new ArrayList<>();
+		JsonReader reader;
+		try {
+			reader = new JsonReader(new FileReader(SOURCE));
+			JsonElement element = JsonParser.parseReader(reader);
+			JsonArray featuresArray = element.getAsJsonObject().get("features").getAsJsonArray();
 
+			SimpleDateFormat dateParser=new SimpleDateFormat("yyyy/MM/dd");
+
+			for(JsonElement e: featuresArray) {
+				Comparendo c = new Comparendo();
+				c.OBJECTID = e.getAsJsonObject().get("properties").getAsJsonObject().get("OBJECTID").getAsInt();
+				String s = e.getAsJsonObject().get("properties").getAsJsonObject().get("FECHA_HORA").getAsString();	
+				c.FECHA_HORA = dateParser.parse(s); 
+				c.MEDIO_DETE = e.getAsJsonObject().get("properties").getAsJsonObject().get("MEDIO_DETE").getAsString();
+				c.CLASE_VEHI = e.getAsJsonObject().get("properties").getAsJsonObject().get("CLASE_VEHI").getAsString();
+				c.TIPO_SERVI = e.getAsJsonObject().get("properties").getAsJsonObject().get("TIPO_SERVI").getAsString();
+				c.INFRACCION = e.getAsJsonObject().get("properties").getAsJsonObject().get("INFRACCION").getAsString();
+				c.DES_INFRAC = e.getAsJsonObject().get("properties").getAsJsonObject().get("DES_INFRAC").getAsString();	
+				c.LOCALIDAD = e.getAsJsonObject().get("properties").getAsJsonObject().get("LOCALIDAD").getAsString();
+				
+				c.longitud = e.getAsJsonObject().get("geometry").getAsJsonObject().get("coordinates").getAsJsonArray()
+						.get(0).getAsDouble();
+				c.latitud = e.getAsJsonObject().get("geometry").getAsJsonObject().get("coordinates").getAsJsonArray()
+						.get(1).getAsDouble();
+
+				agregar(c);
+			}
+		} 
+		catch (FileNotFoundException | ParseException e) {
+			e.printStackTrace();
+		}
 	}
+
 
 	/**
 	 * Imprimir los elemntos de la lista por medio de sus metodos toString().
 	 */
-	public String imprimirLista()
-	{
-		String lista = "";
-		for(int i = 0; i < datos.getLength(); i++)
-		{
-			try
-			{
-				lista += datos.getAt(0).toString();
-			}
-			catch(Exception e)
-			{
-
-			}
+	public void imprimirLista() {
+		Node actual = primero();
+		for(int i = 0; i < darTamano(); i++) {
+				System.out.println(actual.getItem().toString());
+				actual = actual.getNext();
 		}
-		return lista;
 	}
 
 

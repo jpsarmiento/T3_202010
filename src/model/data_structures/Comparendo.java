@@ -1,56 +1,54 @@
 package model.data_structures;
-import java.util.ArrayList;
+import java.util.Date;
 
-import com.google.gson.*;
-import com.google.gson.annotations.SerializedName;
-
-public class Comparendo 
-{
+public class Comparendo {
 	
 	/**
 	 * ID del comparendo.
 	 */
-	private int OBJECTID;
+	public int OBJECTID;
 	
 	/**
 	 * Fecha del comparendo.
 	 */
-	private String FECHA_HORA;
+	public Date FECHA_HORA;
 	
 	/**
 	 * Medio de deteccion de la infraccion.
 	 */
-	private String MEDIO_DETE;
+	public String MEDIO_DETE;
 	
 	/**
 	 * Tipo de vehiculo de la infraccion.
 	 */
-	private String CLASE_VEHI;
+	public String CLASE_VEHI;
 	
 	/**
 	 * Tipo de servicio del vehiculo.
 	 */
-	private String TIPO_SERVI;
+	public String TIPO_SERVI;
 	
 	/**
 	 * Titulo de la infraccion.
 	 */
-	private String INFRACCION;
+	public String INFRACCION;
 	
 	/**
 	 * Descripcion de la infraccion cometida.
 	 */
-	private String DES_INFRAC;
+	public String DES_INFRAC;
 	
 	/**
 	 * Localidad donde ocurrio la infraccion.
 	 */
-	private String LOCALIDAD;
+	public String LOCALIDAD;
 	
 	/**
 	 * Par de cordenadas (lat y lon).
 	 */
-	private ArrayList<Double> coordinates;
+	public double latitud;
+	
+	public double longitud;
 	
 	/**
 	 * Constructor.
@@ -64,30 +62,17 @@ public class Comparendo
 	 * @param String localidad. Localidad de los hechos.
 	 * @param ArrayList<Double> cordenadas. Par de cordenadas.
 	 */
-	public Comparendo (int id, String fecha, String medio, String vehiculo, String tipoServ, String infraccion, String descripcion, String localidad, ArrayList<Double> cordenadas)
-	{
-		OBJECTID = id;
-		FECHA_HORA = fecha;
-		MEDIO_DETE = medio;
-		CLASE_VEHI = vehiculo;
-		TIPO_SERVI = tipoServ;
-		INFRACCION = infraccion;
-		DES_INFRAC = descripcion;
-		LOCALIDAD = localidad;
-		coordinates = cordenadas;
-	}
-	
+		
 	@Override
-	public String toString()
-	{
-		return ("Infracción #" + OBJECTID + ": " + DES_INFRAC + " en: " + LOCALIDAD + " coords: " + coordinates.get(0) + ", " + coordinates.get(1));
+	public String toString() {
+		return "Comparendo [ID:" + OBJECTID + ", FECHA:" + FECHA_HORA + ", TIPO DE VEHICULO:" + CLASE_VEHI + ", TIPO DE SERVICIO:" + TIPO_SERVI
+				+ ", INFRACCION:" + INFRACCION + ", LOCALIDAD:" + LOCALIDAD + "]";
 	}
 	
 	/**
 	 * @return OBJECTID
 	 */
-	public int getID()
-	{
+	public int getID() {
 		return OBJECTID;
 	}
 
