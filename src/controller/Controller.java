@@ -56,8 +56,8 @@ public class Controller {
 			}
 			else if(option==3)
 			{
-				if( modelo.primero().getItem()!= null)
-					view.printMessage("El comparendo encontrado fue: "+ modelo.primero().getItem().toString());
+				if( modelo.primeroQueue().getItem()!= null)
+					view.printMessage("El comparendo encontrado fue: "+ modelo.primeroQueue().getItem().toString());
 				else
 					view.printMessage("No se encontro el comparendo.");
 
@@ -66,7 +66,8 @@ public class Controller {
 			}
 			else if(option==4)
 			{
-				Comparendo borrado = modelo.eliminar();
+				Comparendo borrado = modelo.eliminarQueue();
+				modelo.eliminarStack();
 				if(borrado != null)
 					view.printMessage(borrado.toString());
 				else

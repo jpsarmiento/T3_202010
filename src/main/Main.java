@@ -9,7 +9,6 @@ public class Main {
 		try {
 			controler.run();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -19,6 +19,7 @@ import com.google.gson.stream.JsonReader;
 
 import model.data_structures.Node;
 import model.data_structures.Queue;
+import model.data_structures.Stack;
 
 /**
  * Definicion del modelo del mundo
@@ -29,6 +30,12 @@ public class Modelo {
 	 * Atributos del modelo del mundo
 	 */
 	private Queue cola;
+
+	/**
+	 * Atributos del modelo del mundo
+	 */
+	private Stack pila;
+
 
 	/**
 	 * Gson utilizado para deserializar el archivo
@@ -46,6 +53,7 @@ public class Modelo {
 	{
 		cola = new Queue();
 		gson = new Gson();
+		pila = new Stack();
 	}
 
 
@@ -65,6 +73,7 @@ public class Modelo {
 	public void agregar(Comparendo x)
 	{	
 		cola.enqueue(x);
+		pila.push(x);
 	}
 
 	/**
@@ -74,8 +83,12 @@ public class Modelo {
 	 * @throws Exception 
 	 */
 
-	public Node primero() {
+	public Node primeroQueue() {
 		return cola.head();
+	}
+
+	public Node primeroStack() {
+		return pila.head();
 	}
 
 	/**
@@ -84,8 +97,12 @@ public class Modelo {
 	 * @return dato eliminado
 	 * @throws Exception 
 	 */
-	public Comparendo eliminar() {
-			return (Comparendo) cola.dequeue();	
+	public Comparendo eliminarQueue() {
+		return (Comparendo) cola.dequeue();	
+	}
+
+	public Comparendo eliminarStack() {
+		return (Comparendo) pila.pop();
 	}
 
 	/**
@@ -112,7 +129,7 @@ public class Modelo {
 				c.INFRACCION = e.getAsJsonObject().get("properties").getAsJsonObject().get("INFRACCION").getAsString();
 				c.DES_INFRAC = e.getAsJsonObject().get("properties").getAsJsonObject().get("DES_INFRAC").getAsString();	
 				c.LOCALIDAD = e.getAsJsonObject().get("properties").getAsJsonObject().get("LOCALIDAD").getAsString();
-				
+
 				c.longitud = e.getAsJsonObject().get("geometry").getAsJsonObject().get("coordinates").getAsJsonArray()
 						.get(0).getAsDouble();
 				c.latitud = e.getAsJsonObject().get("geometry").getAsJsonObject().get("coordinates").getAsJsonArray()
@@ -131,47 +148,51 @@ public class Modelo {
 	 * Imprimir los elemntos de la lista por medio de sus metodos toString().
 	 */
 	public void imprimirLista() {
-		Node actual = primero();
+		Node actual = primeroQueue();
 		for(int i = 0; i < darTamano(); i++) {
-				System.out.println(actual.getItem().toString());
-				actual = actual.getNext();
+			System.out.println(actual.getItem().toString());
+			actual = actual.getNext();
 		}
 	}
-	
+
 	public Queue<Comparendo> cluster()
 	{
 		Queue<Comparendo> rta = new Queue<Comparendo>();
 		Queue<Comparendo> rta2 = new Queue<Comparendo>();
-		Node<Comparendo> head = cola.head();
+		Comparendo head = (Comparendo) cola.dequeue();
 		String infraccion = "";
 		while(head!=null) {
-			if(!head.getItem().INFRACCION.equals(infraccion)) {
-				infraccion = head.getItem().INFRACCION;
-				rta2.restart();
-				rta2.enqueue(head.getItem());
-			}
+			if(head.INFRACCION.equals(infraccion))
+				rta2.enqueue(head);
 			else {
-				rta2.enqueue(head.getItem());
+				infraccion = head.INFRACCION;
+				rta2.first = new Node(head);
 			}
 			if(rta2.size()>rta.size()) {
 				rta = rta2;
 			}
-			head = head.getNext();
+			head = (Comparendo) cola.dequeue();
 		}
 		return rta;
 	}
-	
+
 	public void imprimirCluster() {
 		Queue<Comparendo> cluster = cluster();
 		Node<Comparendo> actual = cluster.head();
+		System.out.println("El numero de comparendos es: " + cluster.size());
 		for(int i = 0; i < cluster.size() && actual != null; i++) {
-				System.out.println(actual.getItem().toString());
-				actual = actual.getNext();
+			System.out.println(actual.getItem().toString());
+			actual = actual.getNext();
 		}
+	}
+
+	public Stack<Comparendo> comparendosInfraccion(int N, String pInfraccion) {
+		Stack<Comparendo> infracciones = new Stack<Comparendo>();
+		return infracciones;
 	}
 	
 	public void imprimirComparendos() {
-		
+
 	}
 
 

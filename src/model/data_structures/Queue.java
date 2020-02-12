@@ -3,7 +3,7 @@ package model.data_structures;
 public class Queue<T> {
 	//FIFO
 
-	private Node<T> first;
+	public Node<T> first;
 
 	private Node<T> last;
 
