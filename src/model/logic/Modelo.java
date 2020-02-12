@@ -73,7 +73,7 @@ public class Modelo {
 	public void agregar(Comparendo x)
 	{	
 		cola.enqueue(x);
-		pila.push(x);
+		// pila.push(x);
 	}
 
 	/**
@@ -143,18 +143,6 @@ public class Modelo {
 		}
 	}
 
-
-	/**
-	 * Imprimir los elemntos de la lista por medio de sus metodos toString().
-	 */
-	public void imprimirLista() {
-		Node actual = primeroQueue();
-		for(int i = 0; i < darTamano(); i++) {
-			System.out.println(actual.getItem().toString());
-			actual = actual.getNext();
-		}
-	}
-
 	public Queue<Comparendo> cluster()
 	{
 		Queue<Comparendo> rta = new Queue<Comparendo>();
@@ -166,10 +154,15 @@ public class Modelo {
 				rta2.enqueue(head);
 			else {
 				infraccion = head.INFRACCION;
-				rta2.first = new Node(head);
+				rta2.restart();
+				rta2.enqueue(head);
 			}
-			if(rta2.size()>rta.size()) {
-				rta = rta2;
+			if(rta.size()<rta2.size()) {
+				rta.restart();
+				int limit = rta2.size();
+				for(int i = 0; i < limit; i++) {
+					rta.enqueue(rta2.dequeue());
+				}
 			}
 			head = (Comparendo) cola.dequeue();
 		}
@@ -180,7 +173,17 @@ public class Modelo {
 		Queue<Comparendo> cluster = cluster();
 		Node<Comparendo> actual = cluster.head();
 		System.out.println("El numero de comparendos es: " + cluster.size());
-		for(int i = 0; i < cluster.size() && actual != null; i++) {
+		while(actual != null) {
+			System.out.println(actual.getItem().toString());
+			actual = actual.getNext();
+		}
+	}
+	/**
+	 * Imprimir los elemntos de la lista por medio de sus metodos toString().
+	 */
+	public void imprimirLista() {
+		Node actual = primeroQueue();
+		for(int i = 0; i < darTamano(); i++) {
 			System.out.println(actual.getItem().toString());
 			actual = actual.getNext();
 		}
@@ -190,7 +193,7 @@ public class Modelo {
 		Stack<Comparendo> infracciones = new Stack<Comparendo>();
 		return infracciones;
 	}
-	
+
 	public void imprimirComparendos() {
 
 	}

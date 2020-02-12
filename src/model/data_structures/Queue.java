@@ -84,5 +84,6 @@ public class Queue<T> {
 	 */
 	public void restart() {
 		first = null;
+		length = 0;
 	}
 }
