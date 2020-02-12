@@ -35,7 +35,7 @@ public class Controller {
 
 		int option = lector.nextInt();
 
-		while(option != 6)
+		while(option != 8)
 		{
 			if(option==1)
 			{
@@ -81,6 +81,16 @@ public class Controller {
 				view.printModelo(modelo);
 				view.printMenu();
 			}
+			else if(option==6)
+			{
+				view.printCluster(modelo);
+				view.printMenu();
+			}
+			else if(option==7)
+			{
+				view.printComparendos(modelo);
+				view.printMenu();
+			}
 			else
 			{
 				view.printMessage("Numero invalido");
@@ -89,7 +99,7 @@ public class Controller {
 			}
 			option = lector.nextInt();
 		}
-		if(option==6)
+		if(option==8)
 		{
 			System.out.println("Ha salido con exito.");
 		}

@@ -50,18 +50,6 @@ public class Comparendo {
 	
 	public double longitud;
 	
-	/**
-	 * Constructor.
-	 * @param int id. ID de la infraccion
-	 * @param String fecha. Fecha del comparendo
-	 * @param String medio. Medio de deteccion.
-	 * @param String vehiculo. Tipo de vehiculo
-	 * @param String tipoServ. Tipo de servicio del vehiculo
-	 * @param String infraccion. Titulo de la infraccion.
-	 * @param String descripcion. Descripcion de la infraccion
-	 * @param String localidad. Localidad de los hechos.
-	 * @param ArrayList<Double> cordenadas. Par de cordenadas.
-	 */
 		
 	@Override
 	public String toString() {

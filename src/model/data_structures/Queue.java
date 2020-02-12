@@ -78,4 +78,11 @@ public class Queue<T> {
 	public Node<T> head() {
 		return first;
 	}
+	
+	/**
+	 * elimina la cola.
+	 */
+	public void restart() {
+		first = null;
+	}
 }

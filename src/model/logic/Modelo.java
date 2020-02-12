@@ -137,6 +137,42 @@ public class Modelo {
 				actual = actual.getNext();
 		}
 	}
+	
+	public Queue<Comparendo> cluster()
+	{
+		Queue<Comparendo> rta = new Queue<Comparendo>();
+		Queue<Comparendo> rta2 = new Queue<Comparendo>();
+		Node<Comparendo> head = cola.head();
+		String infraccion = "";
+		while(head!=null) {
+			if(!head.getItem().INFRACCION.equals(infraccion)) {
+				infraccion = head.getItem().INFRACCION;
+				rta2.restart();
+				rta2.enqueue(head.getItem());
+			}
+			else {
+				rta2.enqueue(head.getItem());
+			}
+			if(rta2.size()>rta.size()) {
+				rta = rta2;
+			}
+			head = head.getNext();
+		}
+		return rta;
+	}
+	
+	public void imprimirCluster() {
+		Queue<Comparendo> cluster = cluster();
+		Node<Comparendo> actual = cluster.head();
+		for(int i = 0; i < cluster.size() && actual != null; i++) {
+				System.out.println(actual.getItem().toString());
+				actual = actual.getNext();
+		}
+	}
+	
+	public void imprimirComparendos() {
+		
+	}
 
 
 }
