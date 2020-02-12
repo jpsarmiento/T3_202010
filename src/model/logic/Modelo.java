@@ -1,7 +1,6 @@
 package model.logic;
 
 import model.data_structures.Comparendo;
-import model.data_structures.LinkedList;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,12 +28,12 @@ public class Modelo {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private Queue cola;
+	public Queue cola;
 
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private Stack pila;
+	public Stack pila;
 
 
 	/**
@@ -45,7 +44,9 @@ public class Modelo {
 	/**
 	 * Direccion del archivo de datos.
 	 */
-	public final static String SOURCE = "./data/comparendos_dei_2018_small.geojson";
+	public final static String SMALL = "./data/comparendos_dei_2018_small.geojson";
+
+	public final static String BIG = "./data/comparendos_dei_2018_small.geojson";
 	/**
 	 * Constructor del modelo del mundo
 	 */
@@ -61,9 +62,12 @@ public class Modelo {
 	 * Servicio de consulta de numero de elementos presentes en el modelo 
 	 * @return numero de elementos presentes en el modelo
 	 */
-	public int darTamano()
-	{
+	public int darTamanoCola() {
 		return cola.size();
+	}
+
+	public int darTamanoPila() {
+		return pila.getLength();
 	}
 
 	/**
@@ -73,7 +77,7 @@ public class Modelo {
 	public void agregar(Comparendo x)
 	{	
 		cola.enqueue(x);
-		// pila.push(x);
+		pila.push(x);
 	}
 
 	/**
@@ -88,7 +92,7 @@ public class Modelo {
 	}
 
 	public Node primeroStack() {
-		return pila.head();
+		return pila.getHead();
 	}
 
 	/**
@@ -112,7 +116,7 @@ public class Modelo {
 		ArrayList<Comparendo> objects = new ArrayList<>();
 		JsonReader reader;
 		try {
-			reader = new JsonReader(new FileReader(SOURCE));
+			reader = new JsonReader(new FileReader(SMALL));
 			JsonElement element = JsonParser.parseReader(reader);
 			JsonArray featuresArray = element.getAsJsonObject().get("features").getAsJsonArray();
 
@@ -183,7 +187,7 @@ public class Modelo {
 	 */
 	public void imprimirLista() {
 		Node actual = primeroQueue();
-		for(int i = 0; i < darTamano(); i++) {
+		for(int i = 0; i < darTamanoCola(); i++) {
 			System.out.println(actual.getItem().toString());
 			actual = actual.getNext();
 		}
@@ -194,9 +198,34 @@ public class Modelo {
 		return infracciones;
 	}
 
-	public void imprimirComparendos() {
-
+	public void imprimirInfraccion(int n, String pInfraccion) {
+			Stack<Comparendo> nueva = darElementos(n, pInfraccion);
+			Node<Comparendo> actual = nueva.getHead();
+			if(nueva.getLength()==0)
+				System.out.println();
+			System.out.println("El numero de comparendos es: " + nueva.getLength());
+			while(actual != null) {
+				System.out.println(actual.getItem().toString());
+				actual = actual.getNext();
+			}
 	}
 
+	public Stack<Comparendo> darElementos(int n , String pIfraccion) {
+			Stack<Comparendo> nueva = new Stack();
+			Stack<Comparendo> borrados = new Stack();
+			while(pila.getHead() != null && n > 0) {
+				Comparendo pop = (Comparendo) pila.pop();
+				if(pop.INFRACCION.equals(pIfraccion)) {
+					nueva.push(pop);
+					n--;
+				}
+				else
+					borrados.push(pop);	
+			}
+			while(borrados.getLength()!=0)
+				pila.push(borrados.pop());	
+
+			return nueva;
+	}
 
 }

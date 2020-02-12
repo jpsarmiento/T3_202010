@@ -35,74 +35,46 @@ public class Controller {
 
 		int option = lector.nextInt();
 
-		while(option != 8)
+		while(option != 6)
 		{
-			if(option==1)
-			{
+			if(option==1) {
 				modelo.loadJSON();
-				if(modelo.darTamano()!=1)
-					view.printMessage("La lista tiene " + modelo.darTamano() + " comparendos.");
-				else
-					view.printMessage("La lista tiene " + modelo.darTamano() + " comparendo.");
-				view.printMessage("");
-				view.printMenu();
-			}
-			else if(option==2)
-			{
-				if(modelo.darTamano()!=1)
-					view.printMessage("La lista tiene: " + modelo.darTamano() + " comparendos.");
-				else
-					view.printMessage("La lista tiene " + modelo.darTamano() + " comparendo.");
-			}
-			else if(option==3)
-			{
-				if( modelo.primeroQueue().getItem()!= null)
-					view.printMessage("El comparendo encontrado fue: "+ modelo.primeroQueue().getItem().toString());
-				else
-					view.printMessage("No se encontro el comparendo.");
+				view.printMessage("La cola tiene " + modelo.darTamanoCola() + " comparendos.");
+				view.printMessage("La pila tiene " + modelo.darTamanoPila() + " comparendos.");
 
 				view.printMessage("");
 				view.printMenu();
 			}
-			else if(option==4)
-			{
-				Comparendo borrado = modelo.eliminarQueue();
-				modelo.eliminarStack();
-				if(borrado != null)
-					view.printMessage(borrado.toString());
-				else
-					view.printMessage("No se pudo eliminar el comparendo.");
-
-				view.printMessage("La lista tiene " + modelo.darTamano() + " comparendos.");
-				view.printMessage("");
-				view.printMenu();
-			}
-			else if(option==5)
-			{
+			else if(option==4) {
 				view.printModelo(modelo);
 				view.printMenu();
 			}
-			else if(option==6)
-			{
+			else if(option==2) {
 				view.printCluster(modelo);
 				view.printMenu();
 			}
-			else if(option==7)
-			{
-				view.printComparendos(modelo);
+			else if(option==3) {
+				view.printMessage("Ingrese el número de comparendos a buscar: ");
+				int n = lector.nextInt();
+				view.printMessage("");
+				view.printMessage("Ingrese el tipo  de infracción a buscar: ");
+				String mensaje = lector.next();
+				view.printMessage("");
+				view.printComparendos(modelo, n, mensaje);
 				view.printMenu();
 			}
-			else
-			{
+			else if(option==5) {
+				view.printMessage("La cola tiene " + modelo.darTamanoCola() + " comparendos.");
+				view.printMessage("La pila tiene " + modelo.darTamanoPila() + " comparendos.");
+			}
+			else {
 				view.printMessage("Numero invalido");
 				view.printMessage("");
 				view.printMenu();
 			}
 			option = lector.nextInt();
 		}
-		if(option==8)
-		{
+		if(option==6)
 			System.out.println("Ha salido con exito.");
-		}
 	}	
 }
