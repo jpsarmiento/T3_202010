@@ -1,7 +1,6 @@
 package model.data_structures;
 
-public class Node<Item>
-{
+public class Node<Item> {
 	
 	/**
 	 * Contenido del nodo
@@ -17,8 +16,7 @@ public class Node<Item>
 	 /**
      * Constructor.
      */
-	public Node(Item x)
-	{
+	public Node(Item x) {
 		it = x;
 		next = null;
 	}
@@ -26,32 +24,28 @@ public class Node<Item>
 	/**
      * Asignacion del contenido del nodo.
      */
-	public void setItem(Item x)
-	{
+	public void setItem(Item x) {
 		it = x;
 	}
 	
 	/**
      * Referencia al siguiente nodo.
      */
-	public void setNext(Node x)
-	{
+	public void setNext(Node<Item> x) {
 		next = x;
 	}
 	
 	/**
      * Cambiar el item
      */
-	public Item getItem()
-	{
+	public Item getItem() {
 		return it;
 	}
 	
 	/**
      * Cambiar el nodo siguiente
      */
-	public Node getNext()
-	{
+	public Node<Item> getNext() {
 		return next;
 	}
 }

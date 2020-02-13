@@ -22,7 +22,7 @@ public class TestStack {
 	}
 
 	public void setUp2() {
-		modelo.loadJSON();
+		modelo.loadJSON(Modelo.SMALL);
 		stack = modelo.pila;
 	}
 
@@ -30,7 +30,7 @@ public class TestStack {
 	public void testPush() {
 		setUp1();
 		setUp2();
-		assertTrue("El primer elemento de la lista deberia ser: ID-29042", 29042==stack.topStack.getItem().OBJECTID);
+		assertTrue("El primer elemento de la lista deberia ser: ID-209146", 209146==stack.topStack.getItem().OBJECTID);
 	}
 
 	@Test
@@ -42,13 +42,13 @@ public class TestStack {
 			stack.pop();
 			i++;
 		}
-		assertTrue("El tamaño de la lista deberia ser " + 0, stack.getLength()==0);
+		assertTrue("El tamaño de la lista deberia ser " + 0, stack.size()==0);
 	}
 
 	@Test
-	public void testGetLength() {
+	public void testSize() {
 		setUp2();
-		assertTrue("El tamaño de la lista deberia ser " + NUM_ELEMENTOS, stack.getLength()==NUM_ELEMENTOS);
+		assertTrue("El tamaño de la lista deberia ser " + NUM_ELEMENTOS, stack.size()==NUM_ELEMENTOS);
 	}
 
 	@Test
@@ -59,9 +59,9 @@ public class TestStack {
 	}
 
 	@Test
-	public void testGetHead() {
+	public void testHead() {
 		setUp2();
-		assertTrue("El primer elemento de la lista deberia ser: ID-29042", 29042==stack.topStack.getItem().OBJECTID);
+		assertTrue("El primer elemento de la lista deberia ser: ID-209146", 209146==stack.topStack.getItem().OBJECTID);
 	}
 }
 

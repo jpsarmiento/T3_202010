@@ -1,19 +1,16 @@
 package test.logic;
 
 import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
-import model.data_structures.Comparendo;
 import model.logic.Modelo;
-
 import org.junit.Before;
 import org.junit.Test;
 
 public class TestModelo 
 {
 
-	private Modelo modelo;	
+	private Modelo modelo;
+	
+	private final static int NUM_ELEMENTOS = 20;
 	@Before
 	public void setUp1()
 	{
@@ -22,48 +19,31 @@ public class TestModelo
 
 	public void setUp2()
 	{
-	
+		modelo.loadJSON(Modelo.SMALL);
 	}
 
 	@Test
 	public void testDarTamano()
 	{
-		// TODO
 		setUp1();
 		setUp2();
+		assertTrue("El tamaño debe ser de: "+ NUM_ELEMENTOS, NUM_ELEMENTOS == modelo.darTamanoCola());
+		assertTrue("El tamaño debe ser de: "+ NUM_ELEMENTOS, NUM_ELEMENTOS == modelo.darTamanoPila());
 	}
 
 	@Test
-	public void testBuscarPosicion() 
-	{
-		// TODO Completar la prueba
+	public void testPrimero() {
 		setUp1();
 		setUp2();
-		try
-		{
-
-		}
-		catch(Exception e)
-		{
-
-		}
+		assertTrue("La cabeza de la cola debe ser: ID-29042", 29042==modelo.primeroQueue().getItem().OBJECTID);
+		assertTrue("La cabeza de la cola debe ser: ID-209146", 209146==modelo.primeroStack().getItem().OBJECTID );
 	}
-
+	
 	@Test
-	public void testEliminar() 
-	{
-		// TODO Completar la prueba
+	public void testEliminar() {
 		setUp1();
 		setUp2();
-		try
-		{
-			
-		}
-		catch(Exception e)
-		{
-
-		}
-
+		assertTrue("El objeto eliminado debe ser: ID-29042", 29042==modelo.eliminarQueue().OBJECTID);
+		assertTrue("El objeto eliminado debe ser: ID-209146", 209146==modelo.eliminarStack().OBJECTID );
 	}
-
 }

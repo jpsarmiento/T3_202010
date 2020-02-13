@@ -1,7 +1,6 @@
 package model.data_structures;
 
-public class Queue<T> {
-	//FIFO
+public class Queue<T> implements IQueue<T> {
 
 	public Node<T> first;
 
@@ -62,13 +61,15 @@ public class Queue<T> {
 		return length;
 	}
 
-	public boolean isEmpty()
-	{
+	/**
+	 * Indica si la cola esta vacia.
+	 * @return true si la cola tiene 0 elementos. false en caso contrario.
+	 */
+	public boolean isEmpty() {
 		if(length==0)
 			return true;
 		else
 			return false;
-
 	}
 	
 	/**

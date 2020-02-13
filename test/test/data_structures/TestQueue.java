@@ -22,7 +22,7 @@ public class TestQueue {
 	}
 
 	public void setUp2() {
-		modelo.loadJSON();
+		modelo.loadJSON(Modelo.SMALL);
 		queue = modelo.cola;
 	}
 

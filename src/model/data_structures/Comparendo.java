@@ -47,7 +47,6 @@ public class Comparendo {
 	 * Par de cordenadas (lat y lon).
 	 */
 	public double latitud;
-	
 	public double longitud;
 	
 		
@@ -56,12 +55,4 @@ public class Comparendo {
 		return "Comparendo [ID:" + OBJECTID + ", FECHA:" + FECHA_HORA + ", TIPO DE VEHICULO:" + CLASE_VEHI + ", TIPO DE SERVICIO:" + TIPO_SERVI
 				+ ", INFRACCION:" + INFRACCION + ", LOCALIDAD:" + LOCALIDAD + "]";
 	}
-	
-	/**
-	 * @return OBJECTID
-	 */
-	public int getID() {
-		return OBJECTID;
-	}
-
 }

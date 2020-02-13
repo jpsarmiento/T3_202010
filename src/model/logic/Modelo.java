@@ -1,21 +1,12 @@
 package model.logic;
 
 import model.data_structures.Comparendo;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
-
 import model.data_structures.Node;
 import model.data_structures.Queue;
 import model.data_structures.Stack;
@@ -28,33 +19,26 @@ public class Modelo {
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	public Queue cola;
+	public Queue<Comparendo> cola;
 
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	public Stack pila;
-
-
-	/**
-	 * Gson utilizado para deserializar el archivo
-	 */
-	private Gson gson;
+	public Stack<Comparendo> pila;
 
 	/**
 	 * Direccion del archivo de datos.
 	 */
 	public final static String SMALL = "./data/comparendos_dei_2018_small.geojson";
 
-	public final static String BIG = "./data/comparendos_dei_2018_small.geojson";
+	public final static String BIG = "./data/comparendos_dei_2018.geojson";
 	/**
 	 * Constructor del modelo del mundo
 	 */
 	public Modelo()
 	{
-		cola = new Queue();
-		gson = new Gson();
-		pila = new Stack();
+		cola = new Queue<Comparendo>();
+		pila = new Stack<Comparendo>();
 	}
 
 
@@ -67,7 +51,7 @@ public class Modelo {
 	}
 
 	public int darTamanoPila() {
-		return pila.getLength();
+		return pila.size();
 	}
 
 	/**
@@ -87,12 +71,12 @@ public class Modelo {
 	 * @throws Exception 
 	 */
 
-	public Node primeroQueue() {
+	public Node<Comparendo> primeroQueue() {
 		return cola.head();
 	}
 
-	public Node primeroStack() {
-		return pila.getHead();
+	public Node<Comparendo> primeroStack() {
+		return pila.head();
 	}
 
 	/**
@@ -112,11 +96,10 @@ public class Modelo {
 	/**
 	 * Carga del geojson a objetos de la lista.
 	 */
-	public void loadJSON() {
-		ArrayList<Comparendo> objects = new ArrayList<>();
+	public void loadJSON(String pArchivo) {
 		JsonReader reader;
 		try {
-			reader = new JsonReader(new FileReader(SMALL));
+			reader = new JsonReader(new FileReader(pArchivo));
 			JsonElement element = JsonParser.parseReader(reader);
 			JsonArray featuresArray = element.getAsJsonObject().get("features").getAsJsonArray();
 
@@ -147,6 +130,9 @@ public class Modelo {
 		}
 	}
 
+	/**
+	 * @return una cola con los elementos del cluster.
+	 */
 	public Queue<Comparendo> cluster()
 	{
 		Queue<Comparendo> rta = new Queue<Comparendo>();
@@ -164,15 +150,17 @@ public class Modelo {
 			if(rta.size()<rta2.size()) {
 				rta.restart();
 				int limit = rta2.size();
-				for(int i = 0; i < limit; i++) {
+				for(int i = 0; i < limit; i++)
 					rta.enqueue(rta2.dequeue());
-				}
 			}
 			head = (Comparendo) cola.dequeue();
 		}
 		return rta;
 	}
 
+	/**
+	 * Imprimir los elemntos de la cola de cluster, formato toString().
+	 */
 	public void imprimirCluster() {
 		Queue<Comparendo> cluster = cluster();
 		Node<Comparendo> actual = cluster.head();
@@ -182,50 +170,41 @@ public class Modelo {
 			actual = actual.getNext();
 		}
 	}
+
 	/**
-	 * Imprimir los elemntos de la lista por medio de sus metodos toString().
+	 * @return una pila con los elementos por infraccion.
 	 */
-	public void imprimirLista() {
-		Node actual = primeroQueue();
-		for(int i = 0; i < darTamanoCola(); i++) {
+	public Stack<Comparendo> darElementos(int n , String pIfraccion) {
+		Stack<Comparendo> nueva = new Stack<Comparendo>();
+		Stack<Comparendo> borrados = new Stack<Comparendo>();
+		while(pila.head() != null && n > 0) {
+			Comparendo pop = (Comparendo) pila.pop();
+			if(pop.INFRACCION.equals(pIfraccion)) {
+				nueva.push(pop);
+				n--;
+			}
+			else
+				borrados.push(pop);	
+		}
+		while(borrados.size()!=0)
+			pila.push(borrados.pop());	
+
+		return nueva;
+	}
+	
+	/**
+	 * Imprimir los elemntos de la pila de infracciones, formato toString().
+	 */
+	public void imprimirInfraccion(int n, String pInfraccion) {
+		Stack<Comparendo> nueva = darElementos(n, pInfraccion);
+		Node<Comparendo> actual = nueva.head();
+		if(nueva.size()==0)
+			System.out.println("No existen comparendos de este tipo");
+		System.out.println("El numero de comparendos es: " + nueva.size());
+		while(actual != null) {
 			System.out.println(actual.getItem().toString());
 			actual = actual.getNext();
 		}
-	}
-
-	public Stack<Comparendo> comparendosInfraccion(int N, String pInfraccion) {
-		Stack<Comparendo> infracciones = new Stack<Comparendo>();
-		return infracciones;
-	}
-
-	public void imprimirInfraccion(int n, String pInfraccion) {
-			Stack<Comparendo> nueva = darElementos(n, pInfraccion);
-			Node<Comparendo> actual = nueva.getHead();
-			if(nueva.getLength()==0)
-				System.out.println();
-			System.out.println("El numero de comparendos es: " + nueva.getLength());
-			while(actual != null) {
-				System.out.println(actual.getItem().toString());
-				actual = actual.getNext();
-			}
-	}
-
-	public Stack<Comparendo> darElementos(int n , String pIfraccion) {
-			Stack<Comparendo> nueva = new Stack();
-			Stack<Comparendo> borrados = new Stack();
-			while(pila.getHead() != null && n > 0) {
-				Comparendo pop = (Comparendo) pila.pop();
-				if(pop.INFRACCION.equals(pIfraccion)) {
-					nueva.push(pop);
-					n--;
-				}
-				else
-					borrados.push(pop);	
-			}
-			while(borrados.getLength()!=0)
-				pila.push(borrados.pop());	
-
-			return nueva;
 	}
 
 }
