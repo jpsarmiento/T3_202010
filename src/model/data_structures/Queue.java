@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public class Queue<T> implements IQueue<T> {
+public class Queue<T extends Comparable<T>> implements IQueue<T> {
 
 	public Node<T> first;
 
@@ -79,6 +79,15 @@ public class Queue<T> implements IQueue<T> {
 	public Node<T> head() {
 		return first;
 	}
+	
+	/**
+	 * Da el ultimo elemento de la cola.
+	 * @return T. ultimo elemento de la cola.
+	 */
+	public Node<T> back() {
+		return last;
+	}
+	
 	
 	/**
 	 * elimina la cola.

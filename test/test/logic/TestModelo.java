@@ -12,23 +12,19 @@ public class TestModelo
 	
 	private final static int NUM_ELEMENTOS = 20;
 	@Before
-	public void setUp1()
-	{
+	public void setUp1() {
 		modelo = new Modelo();
 	}
 
-	public void setUp2()
-	{
+	public void setUp2() {
 		modelo.loadJSON(Modelo.SMALL);
 	}
 
 	@Test
-	public void testDarTamano()
-	{
+	public void testDarTamano() {
 		setUp1();
 		setUp2();
 		assertTrue("El tamaño debe ser de: "+ NUM_ELEMENTOS, NUM_ELEMENTOS == modelo.darTamanoCola());
-		assertTrue("El tamaño debe ser de: "+ NUM_ELEMENTOS, NUM_ELEMENTOS == modelo.darTamanoPila());
 	}
 
 	@Test
@@ -36,7 +32,6 @@ public class TestModelo
 		setUp1();
 		setUp2();
 		assertTrue("La cabeza de la cola debe ser: ID-29042", 29042==modelo.primeroQueue().getItem().OBJECTID);
-		assertTrue("La cabeza de la cola debe ser: ID-209146", 209146==modelo.primeroStack().getItem().OBJECTID );
 	}
 	
 	@Test
@@ -44,6 +39,5 @@ public class TestModelo
 		setUp1();
 		setUp2();
 		assertTrue("El objeto eliminado debe ser: ID-29042", 29042==modelo.eliminarQueue().OBJECTID);
-		assertTrue("El objeto eliminado debe ser: ID-209146", 209146==modelo.eliminarStack().OBJECTID );
 	}
 }

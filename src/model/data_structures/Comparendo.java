@@ -1,7 +1,7 @@
 package model.data_structures;
 import java.util.Date;
 
-public class Comparendo {
+public class Comparendo implements Comparable<Comparendo>{
 	
 	/**
 	 * ID del comparendo.
@@ -54,5 +54,14 @@ public class Comparendo {
 	public String toString() {
 		return "Comparendo [ID:" + OBJECTID + ", FECHA:" + FECHA_HORA + ", TIPO DE VEHICULO:" + CLASE_VEHI + ", TIPO DE SERVICIO:" + TIPO_SERVI
 				+ ", INFRACCION:" + INFRACCION + ", LOCALIDAD:" + LOCALIDAD + "]";
+	}
+
+
+	@Override
+	public int compareTo(Comparendo o) {
+		if(this.FECHA_HORA.compareTo(o.FECHA_HORA)!=0)
+			return this.FECHA_HORA.compareTo(o.FECHA_HORA);
+		else
+			return this.OBJECTID-o.OBJECTID;
 	}
 }

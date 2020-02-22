@@ -36,29 +36,19 @@ public class Controller {
 			while(option != 5)
 			{
 				if(option==1) {
+					if(!modelo.inicializado) {
 					modelo.loadJSON(Modelo.SMALL);
 					view.printMessage("La cola tiene " + modelo.darTamanoCola() + " comparendos.");
-					view.printMessage("La pila tiene " + modelo.darTamanoPila() + " comparendos.");
+					view.printMessage(modelo.primeroQueue().getItem().toString());
+					view.printMessage(modelo.ultimoQueue().getItem().toString());
+					}
+					else
+						view.printMessage("Los datos ya han sido cargados previamente!");
 					view.printMessage("");
-					view.printMenu();
-				}
-				else if(option==2) {
-					view.printCluster(modelo);
-					view.printMenu();
-				}
-				else if(option==3) {
-					view.printMessage("Ingrese el número de comparendos a buscar: ");
-					int n = lector.nextInt();
-					view.printMessage("");
-					view.printMessage("Ingrese el tipo  de infracción a buscar: ");
-					String mensaje = lector.next();
-					view.printMessage("");
-					view.printComparendos(modelo, n, mensaje);
 					view.printMenu();
 				}
 				else if(option==4) {
 					view.printMessage("La cola tiene " + modelo.darTamanoCola() + " comparendos.");
-					view.printMessage("La pila tiene " + modelo.darTamanoPila() + " comparendos.");
 				}
 				else {
 					view.printMessage("Numero invalido");

@@ -9,7 +9,6 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import model.data_structures.Node;
 import model.data_structures.Queue;
-import model.data_structures.Stack;
 
 /**
  * Definicion del modelo del mundo
@@ -20,11 +19,8 @@ public class Modelo {
 	 * Atributos del modelo del mundo
 	 */
 	public Queue<Comparendo> cola;
-
-	/**
-	 * Atributos del modelo del mundo
-	 */
-	public Stack<Comparendo> pila;
+	
+	public boolean inicializado;
 
 	/**
 	 * Direccion del archivo de datos.
@@ -32,15 +28,14 @@ public class Modelo {
 	public final static String SMALL = "./data/comparendos_dei_2018_small.geojson";
 
 	public final static String BIG = "./data/comparendos_dei_2018.geojson";
+	
 	/**
 	 * Constructor del modelo del mundo
 	 */
-	public Modelo()
-	{
+	public Modelo() {
 		cola = new Queue<Comparendo>();
-		pila = new Stack<Comparendo>();
+		inicializado = false;
 	}
-
 
 	/**
 	 * Servicio de consulta de numero de elementos presentes en el modelo 
@@ -50,18 +45,12 @@ public class Modelo {
 		return cola.size();
 	}
 
-	public int darTamanoPila() {
-		return pila.size();
-	}
-
 	/**
 	 * Requerimiento de agregar dato
 	 * @param dato
 	 */
-	public void agregar(Comparendo x)
-	{	
+	public void agregar(Comparendo x) {	
 		cola.enqueue(x);
-		pila.push(x);
 	}
 
 	/**
@@ -74,9 +63,9 @@ public class Modelo {
 	public Node<Comparendo> primeroQueue() {
 		return cola.head();
 	}
-
-	public Node<Comparendo> primeroStack() {
-		return pila.head();
+	
+	public Node<Comparendo> ultimoQueue() {
+		return cola.back();
 	}
 
 	/**
@@ -87,10 +76,6 @@ public class Modelo {
 	 */
 	public Comparendo eliminarQueue() {
 		return (Comparendo) cola.dequeue();	
-	}
-
-	public Comparendo eliminarStack() {
-		return (Comparendo) pila.pop();
 	}
 
 	/**
@@ -124,87 +109,22 @@ public class Modelo {
 
 				agregar(c);
 			}
+			inicializado = true;
 		} 
 		catch (FileNotFoundException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * @return una cola con los elementos del cluster.
-	 */
-	public Queue<Comparendo> cluster()
-	{
-		Queue<Comparendo> rta = new Queue<Comparendo>();
-		Queue<Comparendo> rta2 = new Queue<Comparendo>();
-		Comparendo head = (Comparendo) cola.dequeue();
-		String infraccion = "";
-		while(head!=null) {
-			if(head.INFRACCION.equals(infraccion))
-				rta2.enqueue(head);
-			else {
-				infraccion = head.INFRACCION;
-				rta2.restart();
-				rta2.enqueue(head);
-			}
-			if(rta.size()<rta2.size()) {
-				rta.restart();
-				int limit = rta2.size();
-				for(int i = 0; i < limit; i++)
-					rta.enqueue(rta2.dequeue());
-			}
-			head = (Comparendo) cola.dequeue();
-		}
-		return rta;
-	}
-
-	/**
-	 * Imprimir los elemntos de la cola de cluster, formato toString().
-	 */
-	public void imprimirCluster() {
-		Queue<Comparendo> cluster = cluster();
-		Node<Comparendo> actual = cluster.head();
-		System.out.println("El numero de comparendos es: " + cluster.size());
-		while(actual != null) {
-			System.out.println(actual.getItem().toString());
-			actual = actual.getNext();
-		}
-	}
-
-	/**
-	 * @return una pila con los elementos por infraccion.
-	 */
-	public Stack<Comparendo> darElementos(int n , String pIfraccion) {
-		Stack<Comparendo> nueva = new Stack<Comparendo>();
-		Stack<Comparendo> borrados = new Stack<Comparendo>();
-		while(pila.head() != null && n > 0) {
-			Comparendo pop = (Comparendo) pila.pop();
-			if(pop.INFRACCION.equals(pIfraccion)) {
-				nueva.push(pop);
-				n--;
-			}
-			else
-				borrados.push(pop);	
-		}
-		while(borrados.size()!=0)
-			pila.push(borrados.pop());	
-
-		return nueva;
-	}
 	
-	/**
-	 * Imprimir los elemntos de la pila de infracciones, formato toString().
-	 */
-	public void imprimirInfraccion(int n, String pInfraccion) {
-		Stack<Comparendo> nueva = darElementos(n, pInfraccion);
-		Node<Comparendo> actual = nueva.head();
-		if(nueva.size()==0)
-			System.out.println("No existen comparendos de este tipo");
-		System.out.println("El numero de comparendos es: " + nueva.size());
-		while(actual != null) {
-			System.out.println(actual.getItem().toString());
-			actual = actual.getNext();
+	public Comparable<Comparendo>[] copiarComparendos(){
+		Comparable<Comparendo>[] arreglo = new Comparable[cola.size()];
+		Node it = cola.first;
+		for(int i = 0; it!=null; i++) {
+			arreglo[i] = (Comparable) it.getItem();
+			it = it.getNext();
 		}
+		System.out.println("El arreglo tiene " + arreglo.length + "comparendos");
+		return arreglo;
 	}
 
 }

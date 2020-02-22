@@ -1,6 +1,6 @@
 package model.data_structures;
 
-public interface IQueue<T> {
+public interface IQueue<T extends Comparable<T>> {
 		
 	public T dequeue();
 	
