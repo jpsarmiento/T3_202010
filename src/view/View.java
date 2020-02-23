@@ -11,9 +11,9 @@ public class View
 	     */
 		public void printMenu() {
 			System.out.println("1. Leer archivo");
-			System.out.println("2. Realizar cluster");
-			System.out.println("3. Comparendos por tipo  de Infraccion");
-			System.out.println("4. Numero de elementos");
+			System.out.println("2. shellSort");
+			System.out.println("3. MergeSort");
+			System.out.println("4. QuickSort");
 			System.out.println("5. Exit");
 			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
 		}
